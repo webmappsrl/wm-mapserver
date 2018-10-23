@@ -18,7 +18,7 @@ ZOOM=$3
 WORKING_PATH=$4
 TILES_REMOTE_PATH=$5
 
-echo "\n\nCREATING TILES E${LON}N${LAT} ZOOM=$ZOOM\n\n"
+echo "CREATING TILES E${LON}N${LAT} ZOOM=$ZOOM"
 
 cd $WORKING_PATH
 rm -f map/metadata.json
