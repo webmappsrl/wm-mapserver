@@ -1,5 +1,3 @@
-conf.json.dist
-
 {
 	"CL_WORKING_PATH":"/path/to/cl_wortking_path",
 	"TILES_WORKING_PATH":"/path/to/tiles",
