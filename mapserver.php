@@ -21,6 +21,9 @@ echo "CL_WORKING_PATH = $CL_WORKING_PATH \n";
 echo "TILES_WORKING_PATH = $TILES_WORKING_PATH \n"; 
 echo "TILES_REMOTE_PATH = $TILES_REMOTE_PATH \n"; 
 
+$email_footer = "CL_WORKING_PATH = $CL_WORKING_PATH<br />
+                 TILES_WORKING_PATH = $TILES_WORKING_PATH<br />
+                 TILES_REMOTE_PATH = $TILES_REMOTE_PATH<br />";
 
 // READING QUEUE
 $data = json_decode(file_get_contents($argv[1]),TRUE);
@@ -28,6 +31,7 @@ $data = json_decode(file_get_contents($argv[1]),TRUE);
 foreach ($data as $square) {
 
 	// LOG INIZIO SQUARE
+	$start=date('c');
 
 	$LON = $square[0];
 	$LAT = $square[1];
@@ -46,10 +50,15 @@ foreach ($data as $square) {
 	}
 
 	// EMAIL
+	$stop = date('c');
 	$to='alessiopiccioli@webmapp.it';
 	$subj='WM-MAPSERVER';
-	$cont="LON=$LON LAT=$LAT zmin=$zmin zmax=$zmax DONE!";
+	$cont="LON=$LON LAT=$LAT zmin=$zmin zmax=$zmax DONE!<br />";
+	$cont.="START: $start <br/>";
+	$cont.="STOP: $stop<br/>";
+	$cont.="$email";
 	sendEmail($to,$subj,$cont);
+	
 	// LOG FINE SQUARE e EMAIL
 	echo "\n";
 }

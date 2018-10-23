@@ -27,4 +27,4 @@ tl copy -z $ZOOM -Z $ZOOM -b "'${LON} ${LAT} ${LON2} ${LAT2}'" http://localhost:
 
 ## START RSYNC (non includere il metadata.json)
 rm -f map/metadata.json
-## rsync -avz map/ root@46.101.124.52:/root/api.webmapp.it/tiles/
+rsync -avz map/ $TILES_REMOTE_PATH
