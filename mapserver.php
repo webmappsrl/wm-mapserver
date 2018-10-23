@@ -20,12 +20,6 @@ echo "TILES_REMOTE_PATH = $TILES_REMOTE_PATH \n";
 
 
 // READING QUEUE
-/**
-[
-  [LON,LAT,z,Z],
-  [LON,LAT,z,Z]
-]
-**//
 $data = json_decode(file_get_contents($argv[1]),TRUE);
 
 foreach ($data as $square) {
