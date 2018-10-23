@@ -5,6 +5,8 @@
 // TODO email
 // TODO aggiungere command path
 
+require('mail.php');
+
 // Read configuration file
 $j=json_decode(file_get_contents('config.json'),TRUE);
 $CL_WORKING_PATH = $j['CL_WORKING_PATH'];
@@ -40,10 +42,14 @@ foreach ($data as $square) {
 	for ($z=$zmin; $z <= $zmax; $z++) { 
 		$cmd = "bash /root/wm-mapserver/generate_map_tiles.sh $LON $LAT $z $TILES_WORKING_PATH $TILES_REMOTE_PATH";
 		echo "Executing command $cmd\n";
-		system("$cmd");
+		// system("$cmd");
 	}
 
-
+	// EMAIL
+	$to='alessiopiccioli@webmapp.it';
+	$subj='WM-MAPSERVER';
+	$cont="LON=$LON LAT=$LAT zmin=$zmin zmax=$zmax DONE!";
+	sendEmail($to,$subj,$cont)
 	// LOG FINE SQUARE e EMAIL
 	echo "\n";
 }
