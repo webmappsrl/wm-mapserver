@@ -3,40 +3,26 @@
 ## licenza GPL versione 3
 ## genera le tiles della mappa 1 grado per 1 grado
 
+## PARAMETERS
+## 1 LON
+## 2 LAT
+## 3 ZOOM
+## 4 WORKING_PATH
+## 5 TILES_REMOTE_PATH
+
 LON=$1
 LAT=$2
 LON2=$(expr $LON + 1)
 LAT2=$(expr $LAT + 1)
-echo E${LON}N${LAT}
+ZOOM=$3
+WORKING_PATH=$4
+TILES_REMOTE_PATH=$5
 
-cd /mnt/volume-fra1-01/tiles_tmp/
-tl copy -z 13 -Z 13 -b '${LON} ${LAT} ${LON2} ${LAT2}' 'http://95.216.11.110:8080/{z}/{x}/{y}.png' file://./map
-rm map/metadata.json
-cd /mnt/volume-fra1-01/
-rsync --archive --recursive tiles_tmp/map/ tiles
-cd /mnt/volume-fra1-01/tiles_tmp/
-rm -rf map
+echo "\n\nCREATING TILES E${LON}N${LAT} ZOOM=$ZOOM\n\n"
 
-cd /mnt/volume-fra1-01/tiles_tmp/
-tl copy -z 14 -Z 14 -b '${LON} ${LAT} ${LON2} ${LAT2}' 'http://95.216.11.110:8080/{z}/{x}/{y}.png' file://./map
-rm map/metadata.json
-cd /mnt/volume-fra1-01/
-rsync --archive --recursive tiles_tmp/map/ tiles
-cd /mnt/volume-fra1-01/tiles_tmp/
+cd $WORKING_PATH
+rm -f map/metadata.json
 rm -rf map
+tl copy -z $ZOOM -Z $ZOOM -b '${LON} ${LAT} ${LON2} ${LAT2}' 'http://95.216.11.110:8080/{z}/{x}/{y}.png' file://./map
 
-cd /mnt/volume-fra1-01/tiles_tmp/
-tl copy -z 15 -Z 15 -b '${LON} ${LAT} ${LON2} ${LAT2}' 'http://95.216.11.110:8080/{z}/{x}/{y}.png' file://./map
-rm map/metadata.json
-cd /mnt/volume-fra1-01/
-rsync --archive --recursive tiles_tmp/map/ tiles
-cd /mnt/volume-fra1-01/tiles_tmp/
-rm -rf map
-
-cd /mnt/volume-fra1-01/tiles_tmp/
-tl copy -z 16 -Z 16 -b '${LON} ${LAT} ${LON2} ${LAT2}' 'http://95.216.11.110:8080/{z}/{x}/{y}.png' file://./map
-rm map/metadata.json
-cd /mnt/volume-fra1-01/
-rsync --archive --recursive tiles_tmp/map/ tiles
-cd /mnt/volume-fra1-01/tiles_tmp/
-rm -rf map
+## START RSYNC (non includere il metadata.json)
