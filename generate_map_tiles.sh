@@ -23,6 +23,6 @@ echo "\n\nCREATING TILES E${LON}N${LAT} ZOOM=$ZOOM\n\n"
 cd $WORKING_PATH
 rm -f map/metadata.json
 rm -rf map
-tl copy -z $ZOOM -Z $ZOOM -b '${LON} ${LAT} ${LON2} ${LAT2}' 'http://95.216.11.110:8080/{z}/{x}/{y}.png' file://./map
+echo tl copy -z $ZOOM -Z $ZOOM -b '${LON} ${LAT} ${LON2} ${LAT2}' 'http://95.216.11.110:8080/{z}/{x}/{y}.png' file://./map
 
 ## START RSYNC (non includere il metadata.json)
