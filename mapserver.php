@@ -19,7 +19,7 @@ echo "PARAMETERS:\n";
 
 echo "CL_WORKING_PATH = $CL_WORKING_PATH \n"; 
 echo "TILES_WORKING_PATH = $TILES_WORKING_PATH \n"; 
-echo "TILES_REMOTE_PATH = $TILES_REMOTE_PATH \n"; 
+echo "TILES_REMOTE_PATH = $TILES_REMOTE_PATH \n\n\n"; 
 
 $email_footer = "CL_WORKING_PATH = $CL_WORKING_PATH<br />
                  TILES_WORKING_PATH = $TILES_WORKING_PATH<br />
@@ -56,9 +56,9 @@ foreach ($data as $square) {
 	$cont="LON=$LON LAT=$LAT zmin=$zmin zmax=$zmax DONE!<br />";
 	$cont.="START: $start <br/>";
 	$cont.="STOP: $stop<br/>";
-	$cont.="$email";
+	$cont.="$email_footer";
 	sendEmail($to,$subj,$cont);
-	
+
 	// LOG FINE SQUARE e EMAIL
 	echo "\n";
 }
