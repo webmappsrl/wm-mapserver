@@ -40,6 +40,7 @@ foreach ($data as $square) {
 	for ($z=$zmin; $z <= $zmax; $z++) { 
 		$cmd = "bash /root/wm-mapserver/generate_map_tiles.sh $LON $LAT $z $TILES_WORKING_PATH $TILES_REMOTE_PATH";
 		echo "Executing command $cmd\n";
+		system("$cmd");
 	}
 
 
