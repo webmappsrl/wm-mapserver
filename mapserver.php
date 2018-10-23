@@ -3,6 +3,7 @@
 // TODO check parmaters
 // TODO log file
 // TODO email
+// TODO aggiungere command path
 
 // Read configuration file
 $j=json_decode(file_get_contents('config.json'),TRUE);
@@ -36,7 +37,12 @@ foreach ($data as $square) {
 	// Contour Line (script singolo)
 
 	// TL COPY + RSYNC (llop da zmin a zmx step 1)
+	for ($z=$zmin; $z <= $zmax; $z++) { 
+		$cmd = "bash /root/wm-mapserver/generate_map_tiles.sh $LON $LAT $z $CL_WORKING_PATH $TILES_REMOTE_PATH";
+		echo "Executing command $cmd\n";
+	}
+
 
 	// LOG FINE SQUARE e EMAIL
-
+	echo "\n";
 }
