@@ -49,7 +49,7 @@ foreach ($data as $square) {
 	$to='alessiopiccioli@webmapp.it';
 	$subj='WM-MAPSERVER';
 	$cont="LON=$LON LAT=$LAT zmin=$zmin zmax=$zmax DONE!";
-	sendEmail($to,$subj,$cont)
+	sendEmail($to,$subj,$cont);
 	// LOG FINE SQUARE e EMAIL
 	echo "\n";
 }
