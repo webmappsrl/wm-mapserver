@@ -38,7 +38,7 @@ foreach ($data as $square) {
 
 	// TL COPY + RSYNC (llop da zmin a zmx step 1)
 	for ($z=$zmin; $z <= $zmax; $z++) { 
-		$cmd = "bash /root/wm-mapserver/generate_map_tiles.sh $LON $LAT $z $CL_WORKING_PATH $TILES_REMOTE_PATH";
+		$cmd = "bash /root/wm-mapserver/generate_map_tiles.sh $LON $LAT $z $TILES_WORKING_PATH $TILES_REMOTE_PATH";
 		echo "Executing command $cmd\n";
 	}
 
