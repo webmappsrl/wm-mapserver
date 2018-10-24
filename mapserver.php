@@ -54,7 +54,7 @@ foreach ($data as $square) {
 
 	// EMAIL
 	$stop = date('c');
-	$to='alessiopiccioli@webmapp.it,marcobarbieri@webmapp.it';
+	$to='alessiopiccioli@webmapp.it';
 	$subj='WM-MAPSERVER';
 	$cont="LON=$LON LAT=$LAT zmin=$zmin zmax=$zmax DONE!<br />";
 	$cont.="START: $start <br/>";
