@@ -42,19 +42,19 @@ foreach ($data as $square) {
 
 	// Contour Line (script singolo)
 	$cmd="bash /root/wm-mapserver/generate_cl.sh $LAT $LON $CL_WORKING_PATH";
-	echo "Executing command $cmd";
-	//system($cmd);
+	echo "Executing command $cmd\n";
+	system($cmd);
 
 	// TL COPY + RSYNC (llop da zmin a zmx step 1)
 	for ($z=$zmin; $z <= $zmax; $z++) { 
 		$cmd = "bash /root/wm-mapserver/generate_map_tiles.sh $LON $LAT $z $TILES_WORKING_PATH $TILES_REMOTE_PATH";
 		echo "Executing command $cmd\n";
-		//system("$cmd");
+		system("$cmd");
 	}
 
 	// EMAIL
 	$stop = date('c');
-	$to='alessiopiccioli@webmapp.it';
+	$to='info@webmapp.it';
 	$subj='WM-MAPSERVER';
 	$cont="LON=$LON LAT=$LAT zmin=$zmin zmax=$zmax DONE!<br />";
 	$cont.="START: $start <br/>";
