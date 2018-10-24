@@ -15,13 +15,13 @@ LON=$1
 LAT=$2
 LON2=$(expr $LON + 1)
 LAT2=$(expr $LAT + 1)
-echo "\n\nPROCESSING SQUARE E${LON}N${LAT}\n\n"
+echo "PROCESSING SQUARE LON:$LON} LAT:$LAT"
 
 ## Valore iniziale $HOME/mapdata
 WORKING_PATH=$3
 
-rm $WORKING_PATH/hs/10m/*
-rm $WORKING_PATH/slope/10m/*
+rm -f $WORKING_PATH/hs/10m/*
+rm -f $WORKING_PATH/slope/10m/*
 
 psql -U webmapp -d general -h localhost -c "TRUNCATE contourlines_hr;"
 psql -U webmapp -d general -h localhost -c "COPY (select id from grid where ST_Intersects(grid.geom,ST_SetSRID(ST_GeomFromText('POLYGON((${LON} ${LAT},${LON} ${LAT2},${LON2} ${LAT2},${LON2} ${LAT},${LON} ${LAT}))'),4326)) IS TRUE) TO '/tmp/E${LON}N${LAT}.txt';"
@@ -31,7 +31,7 @@ do
   rm $WORKING_PATH/dem/temp/*
 # creo i file geojson per clippare raster e curve di livello:
   echo "*************** create clip geojson ${dem}"
-  rm  $WORKING_PATH/dem/box/${dem}.geojson $WORKING_PATH/dem/box/${dem}buf.geojson $WORKING_PATH/dem/box/${dem}wmbuf.geojson
+  rm $WORKING_PATH/dem/box/${dem}.geojson $WORKING_PATH/dem/box/${dem}buf.geojson $WORKING_PATH/dem/box/${dem}wmbuf.geojson
   psql -U webmapp -d general -h localhost -c "UPDATE grid SET done = 'yes' WHERE id = '${dem}'"
   ogr2ogr -f GeoJSON $WORKING_PATH/dem/box/${dem}.geojson "PG:host=localhost dbname=general user=webmapp" -sql "select geom, id from grid where id = '${dem}'"
   ogr2ogr -f GeoJSON $WORKING_PATH/dem/box/${dem}wm.geojson "PG:host=localhost dbname=general user=webmapp" -sql "select st_transform(st_setsrid(geom,4326),3857) as geom, id from grid where id = '${dem}'"
