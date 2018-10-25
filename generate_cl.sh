@@ -51,10 +51,10 @@ do
   gdalbuildvrt $WORKING_PATH/dem/temp/dlr.vrt $WORKING_PATH/dem/temp/deu3.tif $WORKING_PATH/dem/temp/deu_hgt.tif
 
   echo "*************** resample dlr.vrt -> dlr10m.tif"
-  gdalwarp -s_srs EPSG:3857 -t_srs EPSG:3857 -of GTiff -tr 10 10 -r cubicspline $WORKING_PATH/dem/temp/dlr.vrt $WORKING_PATH/dem/temp/dlr10m.tif
+  gdalwarp -s_srs EPSG:3857 -t_srs EPSG:3857 -ot Float32 -of GTiff -tr 5 5 -r cubicspline $WORKING_PATH/dem/temp/dlr.vrt $WORKING_PATH/dem/temp/dlr10m.tif
 
   echo "*************** costruisco vrt dhr da dem hr vari"
-  gdalbuildvrt -resolution user -tr 10 10 -overwrite $WORKING_PATH/dem/temp/dhr.vrt $WORKING_PATH/dem/temp/dlr10m.tif $WORKING_PATH/dem/it/veneto/${dem}.tif $WORKING_PATH/dem/it/liguria/${dem}.tif $WORKING_PATH/dem/it/piemonte/${dem}.tif $WORKING_PATH/dem/it/friuli/${dem}.tif $WORKING_PATH/dem/it/emilia/${dem}.tif $WORKING_PATH/dem/it/toscana/${dem}.tif $WORKING_PATH/dem/it/lombardia/${dem}.tif $WORKING_PATH/dem/it/trentino/${dem}.tif $WORKING_PATH/dem/it/altoadige/${dem}.tif $WORKING_PATH/dem/it/austria/${dem}.tif $WORKING_PATH/dem/it/sardegna/${dem}.tif
+  gdalbuildvrt -resolution user -tr 5 5 -overwrite $WORKING_PATH/dem/temp/dhr.vrt $WORKING_PATH/dem/temp/dlr10m.tif $WORKING_PATH/dem/it/veneto/${dem}.tif $WORKING_PATH/dem/it/liguria/${dem}.tif $WORKING_PATH/dem/it/piemonte/${dem}.tif $WORKING_PATH/dem/it/friuli/${dem}.tif $WORKING_PATH/dem/it/emilia/${dem}.tif $WORKING_PATH/dem/it/toscana/${dem}.tif $WORKING_PATH/dem/it/lombardia/${dem}.tif $WORKING_PATH/dem/it/trentino/${dem}.tif $WORKING_PATH/dem/it/altoadige/${dem}.tif $WORKING_PATH/dem/it/austria/${dem}.tif $WORKING_PATH/dem/it/sardegna/${dem}.tif
 
   echo "*************** filter vrt dhr -> dhrf"
   otbcli_Smoothing -in $WORKING_PATH/dem/temp/dhr.vrt -out $WORKING_PATH/dem/temp/dhrf.tif -type gaussian -type.gaussian.radius 1.5
@@ -71,14 +71,14 @@ do
 
   echo "*************** crop slope ${dem}"
   rm $WORKING_PATH/slope/10m/${dem}.tif
-  gdalwarp -crop_to_cutline -s_srs EPSG:3857 -t_srs EPSG:3857 -cutline $WORKING_PATH/dem/box/${dem}wm.geojson -of GTiff -tr 10 10 -r cubicspline -dstalpha $WORKING_PATH/dem/temp/ds1_10m.tif $WORKING_PATH/slope/10m/${dem}.tif
+  gdalwarp -crop_to_cutline -s_srs EPSG:3857 -t_srs EPSG:3857 -cutline $WORKING_PATH/dem/box/${dem}wm.geojson -of GTiff -tr 5 5 -r cubicspline -dstalpha $WORKING_PATH/dem/temp/ds1_10m.tif $WORKING_PATH/slope/10m/${dem}.tif
 
   gdaladdo -r cubic $WORKING_PATH/slope/10m/${dem}.tif 2 4 8 16 32
 
 
   echo "*************** crop hillshade ${dem}"
   rm $WORKING_PATH/hs/10m/${dem}.tif
-  gdalwarp -crop_to_cutline -s_srs EPSG:3857 -t_srs EPSG:3857 -cutline $WORKING_PATH/dem/box/${dem}wm.geojson -of GTiff -tr 10 10 -r cubicspline -dstalpha $WORKING_PATH/dem/temp/hs10m.tif $WORKING_PATH/hs/10m/${dem}.tif
+  gdalwarp -crop_to_cutline -s_srs EPSG:3857 -t_srs EPSG:3857 -cutline $WORKING_PATH/dem/box/${dem}wm.geojson -of GTiff -tr 5 5 -r cubicspline -dstalpha $WORKING_PATH/dem/temp/hs10m.tif $WORKING_PATH/hs/10m/${dem}.tif
 
   gdaladdo -r cubic $WORKING_PATH/hs/10m/${dem}.tif 2 4 8 16 32
 
