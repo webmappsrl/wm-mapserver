@@ -27,3 +27,4 @@ tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{
 ## START RSYNC (non includere il metadata.json)
 rm -f map/metadata.json
 rsync -avz map/ $TILES_REMOTE_PATH
+psql -U webmapp -d general -h localhost -c "update grid_1x1 set z${ZOOM} = CURRENT_DATE WHERE grid_1x1.left = $LON AND grid_1x1.bottom = $LAT;
