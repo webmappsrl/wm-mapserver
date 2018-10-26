@@ -50,11 +50,36 @@ do
   echo "*************** compongo dem hgt (deu_hgt) + dem aster europa (deu) -> dlr.vrt"
   gdalbuildvrt $WORKING_PATH/dem/temp/dlr.vrt $WORKING_PATH/dem/temp/deu3.tif $WORKING_PATH/dem/temp/deu_hgt.tif
 
-  echo "*************** resample dlr.vrt -> dlr10m.tif"
-  gdalwarp -s_srs EPSG:3857 -t_srs EPSG:3857 -ot Float32 -of GTiff -tr 5 5 -r cubicspline $WORKING_PATH/dem/temp/dlr.vrt $WORKING_PATH/dem/temp/dlr10m.tif
+  echo "*************** resample dlr.vrt -> dlr5m.tif"
+  gdalwarp -s_srs EPSG:3857 -t_srs EPSG:3857 -ot Float32 -of GTiff -tr 5 5 -r cubicspline $WORKING_PATH/dem/temp/dlr.vrt $WORKING_PATH/dem/temp/dlr5m.tif
 
   echo "*************** costruisco vrt dhr da dem hr vari"
-  gdalbuildvrt -resolution user -tr 5 5 -overwrite $WORKING_PATH/dem/temp/dhr.vrt $WORKING_PATH/dem/temp/dlr10m.tif $WORKING_PATH/dem/it/veneto/${dem}.tif $WORKING_PATH/dem/it/liguria/${dem}.tif $WORKING_PATH/dem/it/piemonte/${dem}.tif $WORKING_PATH/dem/it/friuli/${dem}.tif $WORKING_PATH/dem/it/emilia/${dem}.tif $WORKING_PATH/dem/it/toscana/${dem}.tif $WORKING_PATH/dem/it/lombardia/${dem}.tif $WORKING_PATH/dem/it/trentino/${dem}.tif $WORKING_PATH/dem/it/altoadige/${dem}.tif $WORKING_PATH/dem/it/austria/${dem}.tif $WORKING_PATH/dem/it/sardegna/${dem}.tif
+  #crop 5x5 dem originali:
+  ogr2ogr -f GeoJSON $WORKING_PATH/dem/temp/crop${dem}.geojson "PG:host=localhost dbname=general user=webmapp" -sql "select ST_Buffer(st_transform(st_setsrid(geom,4326),32632), 500, 'join=mitre mitre_limit=5.0') as geom, id from grid where id = '${dem}'"
+  gdalwarp -s_srs EPSG:32632 -ot Float32 -t_srs EPSG:3857 -crop_to_cutline -cutline $WORKING_PATH/dem/temp/crop${dem}.geojson -of GTiff -tr 5 5 -r cubicspline $WORKING_PATH/dem/it_original/altoadige/dtm5p0m.asc $WORKING_PATH/dem/temp/altoadige${dem}.tif
+  rm -f $WORKING_PATH/dem/temp/crop${dem}.geojson
+
+  ogr2ogr -f GeoJSON $WORKING_PATH/dem/temp/crop${dem}.geojson "PG:host=localhost dbname=general user=webmapp" -sql "select ST_Buffer(st_transform(st_setsrid(geom,4326),31287), 500, 'join=mitre mitre_limit=5.0') as geom, id from grid where id = '${dem}'"
+  gdalwarp -s_srs EPSG:31287 -ot Float32 -t_srs EPSG:3857 -crop_to_cutline -cutline $WORKING_PATH/dem/temp/crop${dem}.geojson -of GTiff -tr 5 5 -r cubicspline $WORKING_PATH/dem/it_original/austria/dhm_lamb_10m.tif $WORKING_PATH/dem/temp/austria${dem}.tif
+  rm -f $WORKING_PATH/dem/temp/crop${dem}.geojson
+
+  ogr2ogr -f GeoJSON $WORKING_PATH/dem/temp/crop${dem}.geojson "PG:host=localhost dbname=general user=webmapp" -sql "select ST_Buffer(st_transform(st_setsrid(geom,4326),32632), 500, 'join=mitre mitre_limit=5.0') as geom, id from grid where id = '${dem}'"
+  gdalwarp -s_srs EPSG:32632 -ot Float32 -t_srs EPSG:3857 -crop_to_cutline -cutline $WORKING_PATH/dem/temp/crop${dem}.geojson -of GTiff -tr 5 5 -r cubicspline $WORKING_PATH/dem/it_original/lombardia/mosaic.vrt $WORKING_PATH/dem/temp/lombardia${dem}.tif
+  rm -f $WORKING_PATH/dem/temp/crop${dem}.geojson
+
+  ogr2ogr -f GeoJSON $WORKING_PATH/dem/temp/crop${dem}.geojson "PG:host=localhost dbname=general user=webmapp" -sql "select ST_Buffer(st_transform(st_setsrid(geom,4326),32632), 500, 'join=mitre mitre_limit=5.0') as geom, id from grid where id = '${dem}'"
+  gdalwarp -s_srs EPSG:32632 -ot Float32 -t_srs EPSG:3857 -crop_to_cutline -cutline $WORKING_PATH/dem/temp/crop${dem}.geojson -of GTiff -tr 5 5 -r cubicspline $WORKING_PATH/dem/it_original/piemonte/mosaic.vrt $WORKING_PATH/dem/temp/piemonte${dem}.tif
+  rm -f $WORKING_PATH/dem/temp/crop${dem}.geojson
+
+  ogr2ogr -f GeoJSON $WORKING_PATH/dem/temp/crop${dem}.geojson "PG:host=localhost dbname=general user=webmapp" -sql "select ST_Buffer(st_transform(st_setsrid(geom,4326),3003), 500, 'join=mitre mitre_limit=5.0') as geom, id from grid where id = '${dem}'"
+  gdalwarp -s_srs EPSG:3003  -ot Float32 -t_srs EPSG:3857 -crop_to_cutline -cutline $WORKING_PATH/dem/temp/crop${dem}.geojson -of GTiff -tr 5 5 -r cubicspline $WORKING_PATH/dem/it_original/sardegna/mosaic_dem.vrt $WORKING_PATH/dem/temp/sardegna${dem}.tif
+  rm -f $WORKING_PATH/dem/temp/crop${dem}.geojson
+
+  ogr2ogr -f GeoJSON $WORKING_PATH/dem/temp/crop${dem}.geojson "PG:host=localhost dbname=general user=webmapp" -sql "select ST_Buffer(st_transform(st_setsrid(geom,4326),3003), 500, 'join=mitre mitre_limit=5.0') as geom, id from grid where id = '${dem}'"
+  gdalwarp -s_srs EPSG:3003  -ot Float32 -t_srs EPSG:3857 -crop_to_cutline -cutline $WORKING_PATH/dem/temp/crop${dem}.geojson -of GTiff -tr 5 5 -r cubicspline $WORKING_PATH/dem/it_original/toscana/mosaic.vrt $WORKING_PATH/dem/temp/toscana${dem}.tif
+  rm -f $WORKING_PATH/dem/temp/crop${dem}.geojson
+
+  gdalbuildvrt -resolution user -tr 5 5 -overwrite $WORKING_PATH/dem/temp/dhr.vrt $WORKING_PATH/dem/temp/dlr5m.tif $WORKING_PATH/dem/temp/veneto${dem}.tif $WORKING_PATH/dem/temp/liguria${dem}.tif $WORKING_PATH/dem/temp/piemonte${dem}.tif $WORKING_PATH/dem/temp/friuli${dem}.tif $WORKING_PATH/dem/temp/emilia${dem}.tif $WORKING_PATH/dem/temp/toscana${dem}.tif $WORKING_PATH/dem/temp/lombardia${dem}.tif $WORKING_PATH/dem/temp/trentino${dem}.tif $WORKING_PATH/dem/temp/altoadige${dem}.tif $WORKING_PATH/dem/temp/austria${dem}.tif $WORKING_PATH/dem/temp/sardegna${dem}.tif
 
   echo "*************** filter vrt dhr -> dhrf"
   otbcli_Smoothing -in $WORKING_PATH/dem/temp/dhr.vrt -out $WORKING_PATH/dem/temp/dhrf.tif -type gaussian -type.gaussian.radius 1.5
