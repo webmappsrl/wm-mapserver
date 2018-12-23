@@ -38,17 +38,21 @@ do
   ogr2ogr -f GeoJSON $WORKING_PATH/dem/box/${dem}buf.geojson "PG:host=localhost dbname=general user=webmapp" -sql "select ST_Buffer(geom, 0.005, 'join=mitre mitre_limit=5.0') as geom, id from grid where id = '${dem}'"
   ogr2ogr -f GeoJSON $WORKING_PATH/dem/box/${dem}wmbuf.geojson "PG:host=localhost dbname=general user=webmapp" -sql "select ST_Buffer(st_transform(st_setsrid(geom,4326),3857), 100, 'join=mitre mitre_limit=5.0') as geom, id from grid where id = '${dem}'"
   echo "*************** crop original dem ${dem} -> deu + deu_hgt"
+  gdalwarp -s_srs EPSG:4326 -t_srs EPSG:3857 -crop_to_cutline -cutline $WORKING_PATH/dem/temp/${dem}buf.geojson -of GTiff -tr 25 25 -r cubicspline $WORKING_PATH/dem/world_original/mosaic.vrt $WORKING_PATH/dem/temp/world.tif
   gdalwarp -s_srs EPSG:3035 -t_srs EPSG:3857 -crop_to_cutline -cutline $WORKING_PATH/dem/box/${dem}buf.geojson -of GTiff -tr 25 25 -r cubicspline $WORKING_PATH/dem/eu_original/mosaic_eu.vrt $WORKING_PATH/dem/temp/deu.tif
   gdalwarp -s_srs EPSG:4326 -t_srs EPSG:3857 -crop_to_cutline -cutline $WORKING_PATH/dem/box/${dem}buf.geojson -of GTiff -tr 25 25 -r cubicspline $WORKING_PATH/dem/eu_hgt_original/mosaic_dem.vrt $WORKING_PATH/dem/temp/deu_hgt.tif
   echo "*************** calc_py ${dem} -> deu1"
+  gdal_calc.py -A $WORKING_PATH/dem/temp/world.tif --outfile=$WORKING_PATH/dem/temp/world1.tif --calc="A*(A>-5)" --NoDataValue=-5
   gdal_calc.py -A $WORKING_PATH/dem/temp/deu.tif --outfile=$WORKING_PATH/dem/temp/deu1.tif --calc="A*(A>-5)" --NoDataValue=-5
   echo "*************** despeckle ${dem} -> deu2"
+  otbcli_Despeckle -in $WORKING_PATH/dem/temp/world1.tif -out $WORKING_PATH/dem/temp/world2.tif -filter lee -filter.lee.rad 1.5
   otbcli_Despeckle -in $WORKING_PATH/dem/temp/deu1.tif -out $WORKING_PATH/dem/temp/deu2.tif -filter lee -filter.lee.rad 1.5
   echo "*************** filter ${dem} -> deu3"
+  gdal_translate  -ot Int16 $WORKING_PATH/dem/temp/world2.tif  $WORKING_PATH/dem/temp/world3.tif
   gdal_translate  -ot Int16 $WORKING_PATH/dem/temp/deu2.tif  $WORKING_PATH/dem/temp/deu3.tif
 
   echo "*************** compongo dem hgt (deu_hgt) + dem aster europa (deu) -> dlr.vrt"
-  gdalbuildvrt $WORKING_PATH/dem/temp/dlr.vrt $WORKING_PATH/dem/temp/deu3.tif $WORKING_PATH/dem/temp/deu_hgt.tif
+  gdalbuildvrt $WORKING_PATH/dem/temp/dlr.vrt  $WORKING_PATH/dem/temp/world3.tif $WORKING_PATH/dem/temp/deu3.tif $WORKING_PATH/dem/temp/deu_hgt.tif
 
   echo "*************** resample dlr.vrt -> dlr5m.tif"
   gdalwarp -s_srs EPSG:3857 -t_srs EPSG:3857 -ot Float32 -of GTiff -tr 5 5 -r cubicspline $WORKING_PATH/dem/temp/dlr.vrt $WORKING_PATH/dem/temp/dlr5m.tif
