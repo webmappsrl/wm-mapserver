@@ -100,9 +100,9 @@ do
   psql -U webmapp -d general -h localhost -c "update contourlines_hr set cella = '${dem}' where cella IS NULL;"
   psql -U webmapp -d general -h localhost -c "DELETE FROM contourlines_hr WHERE cella = '${dem}' AND quota = 0;"
   psql -U webmapp -d general -h localhost -c "update contourlines_hr set type = 'cs25' WHERE cella = '${dem}';"
-  psql -U webmapp -d general -h localhost -c "update contourlines_hr set type = 'cs50' WHERE quota IN (50,150,250,350,450,550,650,750,850,950,1050,1150,1250,1350,1450,1550,1650,1750,1850,1950,2050,2150,2250,2350,2450,2550,2650,2750,2850,2950,3050,3150,3250,3350,3450,3550,3650,3750,3850,3950,4050,4150,4250,4350,4450,4550,4650,4750,4850,4950) AND cella = '${dem}';"
-  psql -U webmapp -d general -h localhost -c "update contourlines_hr set type = 'cp25' where quota IN (100,300,500,700,900,1100,1300,1500,1700,1900,2100,2300,2500,2700,2900,3100,3300,3500,3700,3900,4100,4300,4500,4700,4900) AND cella = '${dem}';"
-  psql -U webmapp -d general -h localhost -c "update contourlines_hr set type = 'cp50' where quota IN (200,400,600,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200,3400,3600,3800,4000,4200,4400,4600,4800,5000) AND cella = '${dem}';"
+  psql -U webmapp -d general -h localhost -c "update contourlines_hr set type = 'cs50' WHERE quota IN (50,150,250,350,450,550,650,750,850,950,1050,1150,1250,1350,1450,1550,1650,1750,1850,1950,2050,2150,2250,2350,2450,2550,2650,2750,2850,2950,3050,3150,3250,3350,3450,3550,3650,3750,3850,3950,4050,4150,4250,4350,4450,4550,4650,4750,4850,4950,5050,5150,5250,5350,5450,5550,5650,5750,5850,5950,6050,6150,6250,6350,6450,6550,6650,6750,6850,6950,7050,7150,7250,7350,7450,7550,7650,7750,7850,7950,8050,8150,8250,8350,8450,8550,8650,8750,8850,8950) AND cella = '${dem}';"
+  psql -U webmapp -d general -h localhost -c "update contourlines_hr set type = 'cp25' where quota IN (100,300,500,700,900,1100,1300,1500,1700,1900,2100,2300,2500,2700,2900,3100,3300,3500,3700,3900,4100,4300,4500,4700,4900,5100,5300,5500,5700,5900,6100,6300,6500,6700,6900,7100,7300,7500,7700,7900,8100,8300,8500,8700,8900) AND cella = '${dem}';"
+  psql -U webmapp -d general -h localhost -c "update contourlines_hr set type = 'cp50' where quota IN (200,400,600,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000,3200,3400,3600,3800,4000,4200,4400,4600,4800,5000,5200,5400,5600,5800,6000,6200,6400,6600,6800,7000,7200,7400,7600,7800,8000,8200,8400,8600,8800,9000) AND cella = '${dem}';"
   rm $WORKING_PATH/dem/temp/contour.shp
 
 done < "/tmp/E${LON}N${LAT}.txt"
