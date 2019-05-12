@@ -22,7 +22,7 @@ echo "CREATING TILES LON:$LON-$LON2 LAT:$LAT-$LAT2 ZOOM:$ZOOM"
 
 cd $WORKING_PATH
 rm -rf "$LON"-"$LAT".mbtiles
-tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png mbtiles://./"$LON"-"$LAT".mbtiles
+tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png mbtiles://./lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles
 
 ## START RSYNC
 rsync -avz "$LON"-"$LAT".mbtiles $TILES_REMOTE_PATH
