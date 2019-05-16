@@ -20,10 +20,14 @@ TILES_REMOTE_PATH=$5
 
 echo "CREATING TILES LON:$LON-$LON2 LAT:$LAT-$LAT2 ZOOM:$ZOOM"
 
+echo cd $WORKING_PATH
 cd $WORKING_PATH
+echo rm -rf *.mbtiles
 rm -rf *.mbtiles
-tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png mbtiles://./lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles
+echo tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png mbtiles://./lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles
+tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png mbtiles://./lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles &> /dev/null
 
 ## START RSYNC
+echo rsync -avz lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles $TILES_REMOTE_PATH
 rsync -avz lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles $TILES_REMOTE_PATH
 psql -U webmapp -d general -h localhost -c "update grid_1x1 set z$ZOOM = CURRENT_DATE WHERE grid_1x1.left = $LON AND grid_1x1.bottom = $LAT;"
