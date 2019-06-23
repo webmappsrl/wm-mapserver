@@ -25,7 +25,7 @@ cd $WORKING_PATH
 echo rm -rf *.mbtiles
 rm -rf *.mbtiles
 
--rm -rf map
+rm -rf map
 echo tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png file://./map
 tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png file://./map &> /dev/null
 
