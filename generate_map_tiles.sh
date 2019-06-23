@@ -24,14 +24,15 @@ echo cd $WORKING_PATH
 cd $WORKING_PATH
 echo rm -rf *.mbtiles
 rm -rf *.mbtiles
-
+echo rm -rf map
 rm -rf map
+
 echo tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png file://./map
 tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png file://./map &> /dev/null
 
-echo tl copy file://./map mbtiles://./lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles
+tl copy file://./map mbtiles://./lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles
 
 ## START RSYNC
 echo rsync -avz lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles $TILES_REMOTE_PATH
-echo rsync -avz lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles $TILES_REMOTE_PATH
-echo psql -U webmapp -d general -h localhost -c "update grid_1x1 set z$ZOOM = CURRENT_DATE WHERE grid_1x1.left = $LON AND grid_1x1.bottom = $LAT;"
+rsync -avz lon"$LON"-lat"$LAT"-z"$ZOOM".mbtiles $TILES_REMOTE_PATH
+psql -U webmapp -d general -h localhost -c "update grid_1x1 set z$ZOOM = CURRENT_DATE WHERE grid_1x1.left = $LON AND grid_1x1.bottom = $LAT;"
