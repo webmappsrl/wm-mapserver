@@ -27,8 +27,10 @@ foreach ($data as $square) {
 
 	$LON = $square[0];
 	$LAT = $square[1];
+	$zmin = $square[2];
+	$zmax = $square[3];
 
-	echo "Processing square LON=$LON LAT=$LAT  \n";
+	echo "Processing square LON=$LON LAT=$LAT zmin=$zmin zmax=$zmax \n";
 
 
 	// TL COPY + RSYNC (zoom 13 e 14)
