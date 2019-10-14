@@ -8,7 +8,6 @@
 ## 2 LAT
 ## 3 ZOOM
 ## 4 WORKING_PATH
-## 5 TILES_REMOTE_PATH
 
 LON=$1
 LAT=$2
