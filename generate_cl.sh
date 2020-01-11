@@ -140,4 +140,4 @@ psql -U webmapp -d general -h localhost -c "CREATE INDEX cl_hr_subd_geom_idx  ON
 psql -U webmapp -d general -h localhost -c "VACUUM ANALYZE cl_hr_subd;"
 
 # export curve di livello
-ogr2ogr -f "ESRI Shapefile" -overwrite /root/contourlines_hr/E${LON}N${LAT}.shp -nlt LINESTRING "PG: dbname=general user=webmapp host=localhost" -sql "SELECT * from cl_hr_subd"
+ogr2ogr -f "ESRI Shapefile" -overwrite $WORKING_PATH/contourlines_hr/E${LON}N${LAT}.shp -nlt LINESTRING "PG: dbname=general user=webmapp host=localhost" -sql "SELECT * from cl_hr_subd"
