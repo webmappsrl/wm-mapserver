@@ -48,7 +48,7 @@ foreach ($data as $square) {
 	system($cmd);
 
   // TL COPY + RSYNC (zoom 16)
- 	for ($z=16; $z <= 16; $z++) {
+ 	for ($z=15; $z <= 15; $z++) {
  		$cmd = "bash /root/wm-mapserver/generate_map_tiles_mappa_muta.sh $LON $LAT $z $TILES_WORKING_PATH $TILES_REMOTE_PATH";
  		echo "Executing command $cmd\n";
  		system("$cmd");
