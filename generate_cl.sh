@@ -65,7 +65,7 @@ do
 # compongo i dem in alta risoluzione in unico dem a 5 m di risoluzione che è la base di partenza per creare lo sfumo
   echo "*************** costruisco vrt dhr da dem hr vari"
   #TODO: croppare in anticipo i raster vari e mettere nella cartella $WORKING_PATH/dem/hr/
-  gdalbuildvrt -resolution user -tr 5 5 -overwrite $WORKING_PATH/dem/temp/dhr.vrt $WORKING_PATH/dem/temp/dlr5m.tif $WORKING_PATH/dem/temp/calabria${dem}.tif $WORKING_PATH/dem/hr/veneto${dem}.tif $WORKING_PATH/dem/hr/liguria${dem}.tif $WORKING_PATH/dem/hr/piemonte${dem}.tif $WORKING_PATH/dem/hr/friuli${dem}.tif $WORKING_PATH/dem/hr/emilia${dem}.tif $WORKING_PATH/dem/hr/toscana${dem}.tif $WORKING_PATH/dem/hr/lombardia${dem}.tif $WORKING_PATH/dem/hr/trentino${dem}.tif $WORKING_PATH/dem/hr/altoadige${dem}.tif $WORKING_PATH/dem/hr/austria${dem}.tif $WORKING_PATH/dem/hr/sardegna${dem}.tif
+  gdalbuildvrt -resolution user -tr 5 5 -overwrite $WORKING_PATH/dem/temp/dhr.vrt $WORKING_PATH/dem/temp/dlr5m.tif $WORKING_PATH/dem/hr/calabria${dem}.tif $WORKING_PATH/dem/hr/veneto${dem}.tif $WORKING_PATH/dem/hr/liguria${dem}.tif $WORKING_PATH/dem/hr/piemonte${dem}.tif $WORKING_PATH/dem/hr/friuli${dem}.tif $WORKING_PATH/dem/hr/emilia${dem}.tif $WORKING_PATH/dem/hr/toscana${dem}.tif $WORKING_PATH/dem/hr/lombardia${dem}.tif $WORKING_PATH/dem/hr/trentino${dem}.tif $WORKING_PATH/dem/hr/altoadige${dem}.tif $WORKING_PATH/dem/hr/austria${dem}.tif $WORKING_PATH/dem/hr/sardegna${dem}.tif
 
 # filtro il dem alta risoluzione
   echo "*************** filter vrt dhr -> dhrf"
