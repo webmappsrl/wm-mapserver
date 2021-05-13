@@ -22,8 +22,10 @@ echo "CREATING TILES LON:$LON-$LON2 LAT:$LAT-$LAT2 ZOOM:$ZOOM"
 
 cd $WORKING_PATH
 rm -rf map
-echo tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png mbtiles://./tiles.mbtiles
-tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png mbtiles://./E${LON}N${LAT}.mbtiles &> /dev/null
+echo tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}@2x.png file://./map
+tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}@2x.png file://./map &> /dev/null
+##echo tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png mbtiles://./tiles.mbtiles
+##tl copy -z $ZOOM -Z $ZOOM -b "$LON $LAT $LON2 $LAT2" http://localhost:8080/{z}/{x}/{y}.png mbtiles://./E${LON}N${LAT}.mbtiles &> /dev/null
 
 ## START RSYNC (non includere il metadata.json)
 echo rm -f map/metadata.json
